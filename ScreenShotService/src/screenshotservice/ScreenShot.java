@@ -22,14 +22,31 @@ import javax.imageio.ImageIO;
  *
  * @author ncuxap
  */
-public class ScreenShotService {
+public class ScreenShot {
 
     /**
      * @param args the command line arguments
      */
     // TODO: make new thread for sending pictures to server maybe?
+    private final String ClientName; 
+    private static final String DefautName = "";
+    private static int NextID = 0;
     
-    public static void main(String[] args) throws InterruptedException, AWTException, IOException {
+    public ScreenShot(String Name)
+    {
+        ClientName = Name;
+    }
+    
+    private String GenerateUniqueFileName()
+    {
+        String result; 
+        Date now = new Date();
+        String nowString = now.toString().replace(':','_');
+        result =  ClientName + "_" + nowString;
+        return result;        
+    }
+    
+    public String MakeScreenShot() throws InterruptedException, AWTException, IOException {
         // TODO code application logic here
         String picturesPath = "D:" + File.separator + "4okoloko";
         
@@ -42,8 +59,7 @@ public class ScreenShotService {
         
         while(true)
         {
-            Date now = new Date();
-            String nowString = now.toString().replace(':','_');
+            String ScreenShotName = GenerateUniqueFileName();
             
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice[] screens = ge.getScreenDevices();
@@ -58,20 +74,13 @@ public class ScreenShotService {
 
             Robot robot = new Robot();
             BufferedImage screenShot = robot.createScreenCapture(allScreenBounds);
-            
-            String fileName = picturesPath + File.separator + nowString + ".png";
+
+            String fileName = picturesPath + File.separator + GenerateUniqueFileName()+ ".png";
             
             File outputFile = new File(fileName);
             outputFile.createNewFile();
             
             ImageIO.write(screenShot, "png", outputFile);
-            
-            Thread.sleep(300000); // 5 minutes in miliseconds
-        }
-    }
-    
-    public static void stop()
-    {
-        // test
+        }   
     }
 }
